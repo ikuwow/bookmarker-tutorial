@@ -68,4 +68,23 @@ class BookmarksTable extends Table
         $rules->add($rules->existsIn(['user_id'], 'Users'));
         return $rules;
     }
+
+    // finder method
+    // this can be called by $this->Bookmarks->find('tagged',...)
+    public function findTagged(Query $query, array $options)
+    {
+        $fields = [
+            'Bookmarks.id',
+            'Bookmarks.title',
+            'Bookmarks.url'
+        ];
+
+        return $this->find()
+            ->distinct($fields)
+            ->matching('Tags', function ($q) use ($options) {
+                return $q->where(['Tags.title IN' => $options['tags']]);
+            });
+
+        // use means inheritance of variable
+    }
 }
