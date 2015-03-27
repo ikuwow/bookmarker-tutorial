@@ -11,6 +11,11 @@ use App\Controller\AppController;
 class UsersController extends AppController
 {
 
+    public function beforeFilter(\Cake\Event\Event $event)
+    {
+        $this->Auth->allow(['add']);
+    }
+
     public function login() {
         if ($this->request->is('post')) {
             $user = $this->Auth->identify();
